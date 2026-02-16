@@ -1,33 +1,40 @@
 package com.fitwithai.auth
 
 import android.content.Context
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.fitwithai.datastore.authDataStore
+import com.fitwithai.security.SecureCryptoManager
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 
-class TokenStorage(context: Context) {
-    private val masterKey = MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
+class TokenStorage(private val context: Context) {
 
-    private val preferences = EncryptedSharedPreferences.create(
-        context,
-        "auth_secure_prefs",
-        masterKey,
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
-    )
+    private val TOKEN_KEY = stringPreferencesKey("auth_token")
 
-    fun saveToken(token: String) {
-        preferences.edit().putString(KEY_AUTH_TOKEN, token).apply()
+    suspend fun saveToken(token: String) {
+        val encrypted = SecureCryptoManager.encrypt(token)
+
+        context.authDataStore.edit { preferences ->
+            preferences[TOKEN_KEY] = encrypted
+        }
     }
 
-    fun getToken(): String? = preferences.getString(KEY_AUTH_TOKEN, null)
+    val tokenFlow: Flow<String?> =
+        context.authDataStore.data.map { preferences ->
+            preferences[TOKEN_KEY]?.let {
+                SecureCryptoManager.decrypt(it)
+            }
+        }
 
-    fun clearToken() {
-        preferences.edit().remove(KEY_AUTH_TOKEN).apply()
+    suspend fun getToken(): String? {
+        return tokenFlow.firstOrNull()
     }
 
-    private companion object {
-        const val KEY_AUTH_TOKEN = "auth_token"
+    suspend fun clearToken() {
+        context.authDataStore.edit { preferences ->
+            preferences.remove(TOKEN_KEY)
+        }
     }
 }
