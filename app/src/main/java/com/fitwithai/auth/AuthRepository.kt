@@ -4,6 +4,7 @@ import android.app.Activity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
+import kotlinx.coroutines.tasks.await
 
 data class AuthOutcome(
     val isNewUser: Boolean,
@@ -14,45 +15,43 @@ class AuthRepository(
     private val auth: FirebaseAuth,
     private val tokenStorage: TokenStorage,
 ) {
-    fun signInWithGoogle(idToken: String, onResult: (Result<AuthOutcome>) -> Unit) {
+
+    suspend fun signInWithGoogle(idToken: String): AuthOutcome {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnSuccessListener { result ->
-                val isNewUser = result.additionalUserInfo?.isNewUser == true
-                auth.currentUser
-                    ?.getIdToken(true)
-                    ?.addOnSuccessListener { tokenResult ->
-                        val token = tokenResult.token.orEmpty()
-                        tokenStorage.saveToken(token)
-                        onResult(Result.success(AuthOutcome(isNewUser, token)))
-                    }
-                    ?.addOnFailureListener { error ->
-                        onResult(Result.failure(error))
-                    }
-            }
-            .addOnFailureListener { error ->
-                onResult(Result.failure(error))
-            }
+
+        val result = auth.signInWithCredential(credential).await()
+        val isNewUser = result.additionalUserInfo?.isNewUser == true
+
+        val tokenResult = auth.currentUser
+            ?.getIdToken(true)
+            ?.await()
+            ?: error("User token retrieval failed")
+
+        val token = tokenResult.token.orEmpty()
+
+        tokenStorage.saveToken(token)
+
+        return AuthOutcome(isNewUser, token)
     }
 
-    fun signInWithInstagram(activity: Activity, onResult: (Result<AuthOutcome>) -> Unit) {
+    suspend fun signInWithInstagram(activity: Activity): AuthOutcome {
         val provider = OAuthProvider.newBuilder("instagram.com")
-        auth.startActivityForSignInWithProvider(activity, provider.build())
-            .addOnSuccessListener { result ->
-                val isNewUser = result.additionalUserInfo?.isNewUser == true
-                auth.currentUser
-                    ?.getIdToken(true)
-                    ?.addOnSuccessListener { tokenResult ->
-                        val token = tokenResult.token.orEmpty()
-                        tokenStorage.saveToken(token)
-                        onResult(Result.success(AuthOutcome(isNewUser, token)))
-                    }
-                    ?.addOnFailureListener { error ->
-                        onResult(Result.failure(error))
-                    }
-            }
-            .addOnFailureListener { error ->
-                onResult(Result.failure(error))
-            }
+
+        val result = auth
+            .startActivityForSignInWithProvider(activity, provider.build())
+            .await()
+
+        val isNewUser = result.additionalUserInfo?.isNewUser == true
+
+        val tokenResult = auth.currentUser
+            ?.getIdToken(true)
+            ?.await()
+            ?: error("User token retrieval failed")
+
+        val token = tokenResult.token.orEmpty()
+
+        tokenStorage.saveToken(token)
+
+        return AuthOutcome(isNewUser, token)
     }
 }
