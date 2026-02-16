@@ -55,8 +55,10 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
     //new
-    //for security keyStore
-    implementation(libs.androidx.security.crypto)
+    //for Data Store
+
+    implementation(libs.androidx.datastore.preferences)
+
     //for compose navigation
     implementation(libs.androidx.navigation.compose)
     //for compose icon
