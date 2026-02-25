@@ -1,7 +1,8 @@
 package com.fitwithai.ui.screens.profile.screen.components
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.fitwithai.ui.screens.profile.state.Sex
@@ -26,43 +28,57 @@ fun SexDropdown(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier.fillMaxWidth()) {
+    // 1. Everything lives inside this main Box now
+    Box(modifier = modifier.fillMaxWidth()) {
 
         OutlinedTextField(
             value = selectedSex?.displayName ?: "",
             onValueChange = {},
-            enabled = false,
+            enabled = true,
+            readOnly = true,
             label = { Text("Sex") },
             trailingIcon = {
                 androidx.compose.material3.Icon(
                     imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = null,
+                    contentDescription = "Dropdown Arrow",
                     tint = Color.Black
                 )
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true },
+            modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Green,
-                unfocusedBorderColor = Color.Green,
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.White
+                focusedBorderColor = Color.Gray,
+                unfocusedBorderColor = Color.Gray,
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
             )
         )
 
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
+        // 2. The transparent overlay to catch the click
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .clickable { expanded = true }
+        )
+
+        // 3. Wrap the DropdownMenu in a Box aligned to the BottomEnd
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .wrapContentSize(Alignment.BottomEnd) // This forces the menu to the right!
         ) {
-            Sex.entries.forEach { sex ->
-                DropdownMenuItem(
-                    text = { Text(sex.displayName) },
-                    onClick = {
-                        expanded = false
-                        onSexSelected(sex)
-                    }
-                )
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                Sex.entries.forEach { sex ->
+                    DropdownMenuItem(
+                        text = { Text(sex.displayName) },
+                        onClick = {
+                            expanded = false
+                            onSexSelected(sex)
+                        }
+                    )
+                }
             }
         }
     }
