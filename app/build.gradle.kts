@@ -1,7 +1,9 @@
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.appdistribution)
 }
 
 android {
@@ -29,6 +31,23 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            firebaseAppDistribution {
+                releaseNotesFile="Debug notes for demo version"
+                testers="rss55androi@gmail.com"
+            }
+        }
+        debug {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            firebaseAppDistribution {
+                releaseNotesFile="Release notes for demo version"
+                testers="ali@example.com, bri@example.com, cal@example.com"
+            }
         }
     }
     compileOptions {
@@ -64,12 +83,16 @@ dependencies {
     //for compose icon
     implementation(platform(libs.androidx.compose.bom.v20260200))
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.ui)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    //use for test coroutine
+    testImplementation(libs.kotlinx.coroutines.test)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
