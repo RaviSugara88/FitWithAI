@@ -1,34 +1,33 @@
-package com.fitwithai.common.res
-
-import androidx.annotation.PluralsRes
+import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 
 sealed class AppString {
 
-    data class Resource(
+    // 1. For hardcoded strings or text coming from an API
+    data class DynamicString(val value: String) : AppString()
+
+    // 2. For strings coming from your strings.xml (supports format arguments!)
+    class ResourceString(
         @StringRes val resId: Int,
-        val args: List<Any> = emptyList()
+        vararg val args: Any
     ) : AppString()
 
-    data class Plural(
-        @PluralsRes val resId: Int,
-        val quantity: Int,
-        val args: List<Any> = emptyList()
-    ) : AppString()
+    // 3. Resolves the string inside a Jetpack Compose function
+    @Composable
+    fun asString(): String {
+        return when (this) {
+            is DynamicString -> value
+            is ResourceString -> stringResource(resId, *args)
+        }
+    }
 
-    data class Dynamic(
-        val value: String
-    ) : AppString()
-
-    companion object {
-
-        fun from(@StringRes resId: Int, vararg args: Any) =
-            Resource(resId, args.toList())
-
-        fun plural(@PluralsRes resId: Int, quantity: Int, vararg args: Any) =
-            Plural(resId, quantity, args.toList())
-
-        fun dynamic(value: String) =
-            Dynamic(value)
+    // 4. Resolves the string in standard Kotlin code (like a normal Activity/Fragment)
+    fun asString(context: Context): String {
+        return when (this) {
+            is DynamicString -> value
+            is ResourceString -> context.getString(resId, *args)
+        }
     }
 }

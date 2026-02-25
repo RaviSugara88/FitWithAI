@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FitWithAI</string>
+    <string name="next_button_text">Next</string>
     <string name="welcome_user">Welcome %1$s</string>
 </resources>
