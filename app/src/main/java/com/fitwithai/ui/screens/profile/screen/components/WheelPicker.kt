@@ -1,15 +1,21 @@
 package com.fitwithai.ui.screens.profile.screen.components
 
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -22,12 +28,14 @@ import androidx.compose.ui.unit.dp
 fun <T> WheelPicker(
     items: List<T>,
     selectedItem: T,
+    selectedUnit: String,
     onItemSelected: (T) -> Unit
 ) {
-
+    val itemHeight = 48.dp
     val listState = rememberLazyListState(
-        initialFirstVisibleItemIndex = items.indexOf(selectedItem)
+        initialFirstVisibleItemIndex = maxOf(0, items.indexOf(selectedItem))
     )
+    val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
@@ -40,32 +48,41 @@ fun <T> WheelPicker(
 
     Box(
         modifier = Modifier
-            .height(150.dp)
-            .fillMaxWidth()
+            .height(itemHeight * 3) // Constrain height to show exactly 3 items
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
-
         LazyColumn(
             state = listState,
-            horizontalAlignment = Alignment.CenterHorizontally
+            flingBehavior = flingBehavior, // Makes the scroll snap to the item
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(vertical = itemHeight), // Pads top/bottom so first/last items can reach the center
+            modifier = Modifier.fillMaxSize()
         ) {
-            itemsIndexed(items) { index, item ->
-
-                val isSelected =
-                    index == listState.firstVisibleItemIndex
-
-                Text(
-                    text = item.toString(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (isSelected) Color.Cyan else Color.Gray,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
+            itemsIndexed(items) { _, item ->
+                val isSelected = item == selectedItem
+                Box(
+                    modifier = Modifier.height(itemHeight),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "$item $selectedUnit", // Combines value and unit (e.g., "172 cm")
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isSelected) Color(0xFF4DB6AC) else Color.Gray
+                    )
+                }
             }
         }
 
-        Divider(
-            modifier = Modifier.align(Alignment.Center),
-            thickness = 1.dp,
-            color = Color.Cyan
-        )
+        // The two center highlight lines
+        Column(
+            modifier = Modifier.matchParentSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            VerticalDivider(color = Color.DarkGray, modifier = Modifier.width(120.dp))
+            Spacer(modifier = Modifier.height(itemHeight))
+            VerticalDivider(color = Color.DarkGray, modifier = Modifier.width(120.dp))
+        }
     }
 }

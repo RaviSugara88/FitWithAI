@@ -55,7 +55,7 @@ fun SexDropdown(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            Sex.values().forEach { sex ->
+            Sex.entries.forEach { sex ->
                 DropdownMenuItem(
                     text = { Text(sex.displayName) },
                     onClick = {
