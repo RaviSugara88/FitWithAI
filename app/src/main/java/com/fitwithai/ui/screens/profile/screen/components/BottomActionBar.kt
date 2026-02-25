@@ -1,5 +1,6 @@
 package com.fitwithai.ui.screens.profile.screen.components
 
+import AppString
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,7 +19,7 @@ import com.fitwithai.ui.components.button.ButtonWithProgress
 @Composable
 fun BottomActionBar(
     modifier: Modifier = Modifier,
-    primaryText: String,
+    primaryText: AppString,
     isLoading: Boolean,
     isPrimaryEnabled: Boolean,
     onPrimaryClick: () -> Unit,
@@ -41,7 +42,7 @@ fun BottomActionBar(
         }
 
         ButtonWithProgress(
-            text = primaryText,
+            text = primaryText.asString(),
             isLoading = isLoading,
             enabled = isPrimaryEnabled,
             onClick = onPrimaryClick
