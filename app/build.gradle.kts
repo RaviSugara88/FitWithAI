@@ -84,7 +84,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom.v20260200))
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.ui)
-
+    //for loading Animation
+    implementation(libs.lottie.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
