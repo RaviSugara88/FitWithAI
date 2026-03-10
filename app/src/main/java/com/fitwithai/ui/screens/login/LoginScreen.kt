@@ -1,4 +1,4 @@
-package com.fitwithai.ui.screens
+package com.fitwithai.ui.screens.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.fitwithai.navigation.Routes
 import com.fitwithai.ui.screens.DashboardScreen
-import com.fitwithai.ui.screens.LoginScreen
+import com.fitwithai.ui.screens.login.LoginScreen
 
 @Composable
 fun AppNavGraph(
