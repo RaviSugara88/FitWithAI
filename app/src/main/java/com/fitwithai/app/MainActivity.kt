@@ -4,11 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.fitwithai.test_mvi.CounterScreen
-import com.fitwithai.test_mvi.CounterViewModel
-import com.fitwithai.ui.navigation.AppNavGraph
-import com.fitwithai.ui.screens.DashboardScreen
 import com.fitwithai.ui.screens.profile.screen.ProfileScreen
 import com.fitwithai.ui.screens.profile.viewmodel.ProfileViewModel
 
