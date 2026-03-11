@@ -63,4 +63,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIALS }}
           groups: testers # Replace with your actual Firebase tester group alias
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: "Automated build from GitHub Actions (Branch: ${{ github.ref_name }})"
+          #releaseNotes: "Automated build from GitHub Actions (Branch: ${{ github.ref_name }})"

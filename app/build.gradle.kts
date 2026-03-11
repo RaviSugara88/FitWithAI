@@ -46,7 +46,11 @@ android {
 
             firebaseAppDistribution {
                 releaseNotesFile="Release notes for demo version"
-                testers="ali@example.com, bri@example.com, cal@example.com"
+              //  testers="rss55androi@gmail.com, testuerapp555@gmail.com"
+
+                // Option B: Use groups you created in the Firebase Console
+                // groups = "qa-team, beta-testers"
+                //./gradlew assembleDebug appDistributionUploadDebug
             }
         }
     }
