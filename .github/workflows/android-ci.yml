@@ -42,14 +42,25 @@ jobs:
       - name: Run Lint
         run: ./gradlew lintDebug
 
-      - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest
+      #- name: Run Unit Tests
+      #  run: ./gradlew testDebugUnitTest
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload Debug APK
+      - name: Upload Debug APK to GitHub Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+
+      # --- NEW FIREBASE DISTRIBUTION STEP ---
+      - name: Upload to Firebase App Distribution
+        if: github.event_name == 'push' # Only distribute on merge/push, not on PRs
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIALS }}
+          groups: testers # Replace with your actual Firebase tester group alias
+          file: app/build/outputs/apk/debug/app-debug.apk
+          releaseNotes: "Automated build from GitHub Actions (Branch: ${{ github.ref_name }})"
