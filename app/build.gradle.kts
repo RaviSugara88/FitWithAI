@@ -46,6 +46,7 @@ android {
 
             firebaseAppDistribution {
                 releaseNotesFile="Release notes for demo version"
+                groups = "qa-team"
               //  testers="rss55androi@gmail.com, testuerapp555@gmail.com"
 
                 // Option B: Use groups you created in the Firebase Console
