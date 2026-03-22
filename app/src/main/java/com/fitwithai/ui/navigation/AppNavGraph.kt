@@ -12,8 +12,6 @@ import com.fitwithai.ui.screens.login.LoginScreen
 @Composable
 fun AppNavGraph(
     navController: NavHostController = rememberNavController(),
-    onGoogleLogin: (onSuccess: () -> Unit) -> Unit,
-    onInstagramLogin: (onSuccess: () -> Unit) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -21,9 +19,7 @@ fun AppNavGraph(
     ) {
         composable(Routes.LOGIN) {
             LoginScreen(
-                onGoogleLogin = onGoogleLogin,
-                onInstagramLogin = onInstagramLogin,
-                onLoginSuccess = {
+                onNavigateToDashboard = {
                     navController.navigate(Routes.DASHBOARD) {
                         popUpTo(Routes.LOGIN) {
                             inclusive = true
