@@ -1,4 +1,6 @@
 <resources>
+    <!-- Firebase Console → Project settings → Your apps → Web client ID (OAuth 2.0) -->
+    <string name="default_web_client_id" translatable="false">478583466009-eh63g8a2us7jfei190pft6h347t71ulf.apps.googleusercontent.com</string>
     <string name="app_name">FitWithAI</string>
     <string name="next_button_text">Next</string>
     <string name="welcome_user">Welcome %1$s</string>
