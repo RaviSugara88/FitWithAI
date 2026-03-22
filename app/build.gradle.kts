@@ -88,7 +88,7 @@ dependencies {
     //for compose navigation
     implementation(libs.androidx.navigation.compose)
     //for compose icon
-    implementation(platform(libs.androidx.compose.bom.v20260200))
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.ui)
     //for loading Animation
@@ -97,7 +97,7 @@ dependencies {
     testImplementation(libs.mockito.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom.v20260200))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     //use for test coroutine
     testImplementation(libs.kotlinx.coroutines.test)
