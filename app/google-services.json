@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "478583466009",
+    "project_id": "fitwithai-2079f",
+    "storage_bucket": "fitwithai-2079f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478583466009:android:5251ff061883c190cfe288",
+        "android_client_info": {
+          "package_name": "com.fitwithai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPMMoNICmUkiYmbusqkwscaOD5P7oEvbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

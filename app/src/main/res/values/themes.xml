@@ -2,4 +2,13 @@
 <resources>
 
     <style name="Theme.FitWithAI" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!--
+      Cold start: background only. Do NOT set windowSplashScreenAnimatedIcon to a tall PNG —
+      Android 12+ reserves a circular icon slot and crops the drawable.
+    -->
+    <style name="Theme.FitWithAI.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_screen_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.FitWithAI</item>
+    </style>
 </resources>
