@@ -1,6 +1,6 @@
 package com.fitwithai.ui.screens.profile.screen.components
 
-import AppString
+import com.fitwithai.common.resource.AppString
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets

@@ -13,15 +13,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-data class LoginUiState(
-    val isLoading: Boolean = false,
-    val errorMessage: String? = null,
-)
-
-sealed interface LoginEvent {
-    data object NavigateToDashboard : LoginEvent
-}
-
 class LoginViewModel(
     private val googleLoginUseCase: GoogleLoginUseCase,
     private val instagramLoginUseCase: InstagramLoginUseCase,

@@ -1,6 +1,6 @@
 package com.fitwithai.di
 
-import com.fitwithai.auth.TokenStorage
+import com.fitwithai.auth.TokenManager
 import com.fitwithai.data.auth.GoogleCredentialProvider
 import com.fitwithai.data.auth.GoogleCredentialProviderImpl
 import com.fitwithai.data.auth.GoogleLoginRepositoryImpl
@@ -17,17 +17,17 @@ import org.koin.dsl.module
 
 val appModule = module {
     single { FirebaseAuth.getInstance() }
-    single { TokenStorage(androidContext()) }
+    single { TokenManager(androidContext()) }
     single<GoogleLoginRepository> {
         GoogleLoginRepositoryImpl(
             firebaseAuth = get(),
-            tokenStorage = get(),
+            tokenManager = get(),
         )
     }
     single<InstagramLoginRepository> {
         InstagramLoginRepositoryImpl(
             firebaseAuth = get(),
-            tokenStorage = get(),
+            tokenManager = get(),
         )
     }
     single<GoogleCredentialProvider> {
@@ -37,3 +37,13 @@ val appModule = module {
     factory { InstagramLoginUseCase(get()) }
     viewModel { LoginViewModel(get(), get()) }
 }
+
+val koinModules = listOf(
+    appModule,
+    networkModule,
+    repositoryModule,
+    databaseModule,
+    sensorModule,
+    aiModule,
+    viewModelModule,
+)

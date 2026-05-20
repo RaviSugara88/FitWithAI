@@ -1,6 +1,6 @@
 package com.fitwithai.ui.screens.profile.viewmodel
 
-import AppString
+import com.fitwithai.common.resource.AppString
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

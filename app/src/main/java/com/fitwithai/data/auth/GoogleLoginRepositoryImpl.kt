@@ -1,6 +1,6 @@
 package com.fitwithai.data.auth
 
-import com.fitwithai.auth.TokenStorage
+import com.fitwithai.auth.TokenManager
 import com.fitwithai.domain.model.AuthResult
 import com.fitwithai.domain.repository.GoogleLoginRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 
 class GoogleLoginRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
-    private val tokenStorage: TokenStorage,
+    private val tokenManager: TokenManager,
 ) : GoogleLoginRepository {
 
     override suspend fun signInWithGoogle(idToken: String): AuthResult {
@@ -23,7 +23,7 @@ class GoogleLoginRepositoryImpl(
             ?: error("User token retrieval failed")
 
         val token = tokenResult.token.orEmpty()
-        tokenStorage.saveToken(token)
+        tokenManager.saveToken(token)
 
         return AuthResult(isNewUser = isNewUser, token = token)
     }

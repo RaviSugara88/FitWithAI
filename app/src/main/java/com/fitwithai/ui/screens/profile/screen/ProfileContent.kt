@@ -1,7 +1,7 @@
 
 package com.fitwithai.ui.screens.profile.screen
 
-import AppString
+import com.fitwithai.common.resource.AppString
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.fitwithai.R
-import com.fitwithai.ui.components.text.CustomTextField
+import com.fitwithai.ui.components.textfield.CustomTextField
 import com.fitwithai.ui.screens.profile.screen.components.BmiResultCard
 import com.fitwithai.ui.screens.profile.screen.components.BottomActionBar
 import com.fitwithai.ui.screens.profile.screen.components.DobInputField
