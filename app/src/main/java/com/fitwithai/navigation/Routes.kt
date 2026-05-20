@@ -7,5 +7,6 @@ object Routes {
     const val HOME = "home"
     const val ACTIVITY = "activity"
     const val HISTORY = "history"
+    const val PROGRESS = "progress"
     const val PROFILE = "profile"
 }

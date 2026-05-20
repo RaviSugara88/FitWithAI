@@ -1,14 +1,17 @@
 package com.fitwithai.app
 
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
+import android.app.Application
+import com.fitwithai.di.koinModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-@Composable
-fun FitWithAiApp() {
-    MaterialTheme {
-        Surface {
-            // TODO: Wire navigation + feature screens.
+class FitWithAiApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        AppInitializer.init(this)
+        startKoin {
+            androidContext(this@FitWithAiApp)
+            modules(koinModules)
         }
     }
 }
