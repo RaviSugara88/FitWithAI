@@ -28,7 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.fitwithai.R
+import com.fitwithai.designsystem.resources.Res
+import com.fitwithai.designsystem.resources.next_button_text
 import com.fitwithai.ui.components.textfield.CustomTextField
 import com.fitwithai.ui.screens.profile.screen.components.BmiResultCard
 import com.fitwithai.ui.screens.profile.screen.components.BottomActionBar
@@ -61,7 +62,7 @@ fun ProfileContent(
 
         bottomBar = {
             BottomActionBar(
-                primaryText = AppString.ResourceString(R.string.next_button_text),
+                primaryText = AppString.ResourceString(Res.string.next_button_text),
                 isLoading = uiState.isLoading,
                 isPrimaryEnabled = uiState.isSaveEnabled,
                 onPrimaryClick = { onEvent(ProfileEvent.OnSaveClick) },

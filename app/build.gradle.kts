@@ -108,4 +108,10 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+
+    // Shared KMP modules
+    implementation(projects.core.common)
+    implementation(projects.domain)
+    implementation(projects.designsystem)
+    implementation(projects.presentation)
 }

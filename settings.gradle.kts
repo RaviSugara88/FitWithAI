@@ -22,5 +22,12 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "FitWithAI"
 include(":app")
+include(":core:common")
+include(":core:network")
+include(":domain")
+include(":designsystem")
+include(":presentation")
