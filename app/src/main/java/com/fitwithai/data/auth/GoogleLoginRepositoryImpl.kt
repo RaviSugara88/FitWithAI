@@ -1,6 +1,6 @@
 package com.fitwithai.data.auth
 
-import com.fitwithai.auth.TokenManager
+import com.fitwithai.core.datastore.TokenManager
 import com.fitwithai.domain.model.AuthResult
 import com.fitwithai.domain.repository.GoogleLoginRepository
 import com.google.firebase.auth.FirebaseAuth

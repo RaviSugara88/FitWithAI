@@ -160,7 +160,7 @@ fun LoginScreen(
                         borderColor = ButtonBorder,
                         onClick = {
                             if (uiState.isLoading) return@SocialPillButton
-                            viewModel.onInstagramSignIn(activity)
+                            viewModel.onInstagramSignIn()
                         },
                         enabled = !uiState.isLoading,
                         iconPainter = painterResource(R.drawable.ic_instagram),

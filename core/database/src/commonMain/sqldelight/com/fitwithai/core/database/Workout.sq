@@ -1,0 +1,23 @@
+CREATE TABLE workout (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    durationMinutes INTEGER NOT NULL,
+    calories INTEGER NOT NULL,
+    performedAtEpochMs INTEGER NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM workout
+ORDER BY performedAtEpochMs DESC;
+
+upsert:
+INSERT OR REPLACE INTO workout(id, name, durationMinutes, calories, performedAtEpochMs)
+VALUES (?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM workout
+WHERE id = ?;
+
+deleteAll:
+DELETE FROM workout;

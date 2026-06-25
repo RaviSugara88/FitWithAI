@@ -1,7 +1,7 @@
 package com.fitwithai.data.auth
 
-import android.app.Activity
-import com.fitwithai.auth.TokenManager
+import com.fitwithai.auth.ActivityProvider
+import com.fitwithai.core.datastore.TokenManager
 import com.fitwithai.domain.model.AuthResult
 import com.fitwithai.domain.repository.InstagramLoginRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -11,9 +11,11 @@ import kotlinx.coroutines.tasks.await
 class InstagramLoginRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
     private val tokenManager: TokenManager,
+    private val activityProvider: ActivityProvider,
 ) : InstagramLoginRepository {
 
-    override suspend fun signInWithInstagram(activity: Activity): AuthResult {
+    override suspend fun signInWithInstagram(): AuthResult {
+        val activity = activityProvider.current()
         val provider = OAuthProvider.newBuilder("instagram.com")
         val result = firebaseAuth
             .startActivityForSignInWithProvider(activity, provider.build())

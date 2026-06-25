@@ -16,9 +16,6 @@ interface AuthContract {
         /** Launches the platform Google credential UI and returns the resulting ID token. */
         suspend fun requestGoogleIdToken(): String
 
-        /** Launches the platform Instagram OAuth flow and returns the resulting ID token. */
-        suspend fun requestInstagramToken(): String
-
         fun showLoading(loading: Boolean)
         fun showError(message: String)
         fun onAuthenticated(result: AuthResult)

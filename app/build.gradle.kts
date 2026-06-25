@@ -102,6 +102,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     //use for test coroutine
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.sqldelight.sqlite.driver)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
@@ -111,7 +112,11 @@ dependencies {
 
     // Shared KMP modules
     implementation(projects.core.common)
+    implementation(projects.core.network)
+    implementation(projects.core.database)
+    implementation(projects.core.datastore)
     implementation(projects.domain)
+    implementation(projects.data)
     implementation(projects.designsystem)
     implementation(projects.presentation)
 }

@@ -1,6 +1,5 @@
 package com.fitwithai.ui.screens.login
 
-import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fitwithai.domain.usecase.GoogleLoginUseCase
@@ -43,10 +42,10 @@ class LoginViewModel(
         }
     }
 
-    fun onInstagramSignIn(activity: Activity) {
+    fun onInstagramSignIn() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-            instagramLoginUseCase(activity)
+            instagramLoginUseCase()
                 .onSuccess {
                     _uiState.update { s -> s.copy(isLoading = false) }
                     _events.send(LoginEvent.NavigateToDashboard)

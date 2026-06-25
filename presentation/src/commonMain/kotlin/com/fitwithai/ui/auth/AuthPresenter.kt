@@ -1,6 +1,7 @@
 package com.fitwithai.ui.auth
 
 import com.fitwithai.domain.usecase.GoogleLoginUseCase
+import com.fitwithai.domain.usecase.InstagramLoginUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
  */
 class AuthPresenter(
     private val googleLoginUseCase: GoogleLoginUseCase,
+    private val instagramLoginUseCase: InstagramLoginUseCase,
 ) : AuthContract.Presenter {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -46,8 +48,18 @@ class AuthPresenter(
     }
 
     override fun onInstagramSignInClicked() {
-        // TODO(task #6): route view.requestInstagramToken() through a token-based
-        //  InstagramLoginUseCase once the domain interface is decoupled from Activity.
-        view?.showError("Instagram sign-in not yet wired in shared code")
+        val view = view ?: return
+        scope.launch {
+            view.showLoading(true)
+            instagramLoginUseCase()
+                .onSuccess { result ->
+                    view.showLoading(false)
+                    view.onAuthenticated(result)
+                }
+                .onFailure { error ->
+                    view.showLoading(false)
+                    view.showError(error.message ?: "Instagram sign-in failed")
+                }
+        }
     }
 }
