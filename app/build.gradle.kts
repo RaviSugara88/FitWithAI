@@ -103,6 +103,7 @@ dependencies {
     //use for test coroutine
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.sqldelight.sqlite.driver)
+    testImplementation(libs.koin.test)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
@@ -115,6 +116,7 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.database)
     implementation(projects.core.datastore)
+    implementation(projects.core.platform)
     implementation(projects.domain)
     implementation(projects.data)
     implementation(projects.designsystem)

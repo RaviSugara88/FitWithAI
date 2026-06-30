@@ -7,6 +7,8 @@ import com.fitwithai.core.database.databaseModule
 import com.fitwithai.core.datastore.AndroidSecureStorage
 import com.fitwithai.core.datastore.SecureStorage
 import com.fitwithai.core.datastore.datastoreModule
+import com.fitwithai.core.platform.platformModule
+import com.fitwithai.presentation.di.presentationModule
 import com.fitwithai.data.auth.GoogleCredentialProvider
 import com.fitwithai.data.auth.GoogleCredentialProviderImpl
 import com.fitwithai.data.auth.GoogleLoginRepositoryImpl
@@ -63,8 +65,10 @@ val appModule = module {
 
 val koinModules = listOf(
     androidPlatformModule,
+    platformModule,
     databaseModule,
     datastoreModule,
     dataModule,
+    presentationModule,
     appModule,
 )
