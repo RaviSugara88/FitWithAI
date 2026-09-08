@@ -20,6 +20,7 @@ import com.fitwithai.ui.screens.login.LoginWithPhoneScreen
 import com.fitwithai.ui.screens.login.OtpScreen
 import com.fitwithai.ui.screens.login.PhoneAuthEvent
 import com.fitwithai.ui.screens.login.PhoneAuthViewModel
+import com.fitwithai.ui.screens.splash.SplashScreen
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -33,10 +34,28 @@ fun AppNavGraph(
         }
     }
 
+    val toLogin: () -> Unit = {
+        navController.navigate(Routes.LOGIN) {
+            popUpTo(Routes.SPLASH) { inclusive = true }
+            launchSingleTop = true
+        }
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Routes.LOGIN,
+        startDestination = Routes.SPLASH,
     ) {
+        composable(Routes.SPLASH) {
+            SplashScreen(
+                onAuthenticated = {
+                    navController.navigate(Routes.DASHBOARD) {
+                        popUpTo(Routes.SPLASH) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onUnauthenticated = toLogin,
+            )
+        }
         composable(Routes.LOGIN) {
             LoginScreen(
                 onNavigateToDashboard = toDashboard,
