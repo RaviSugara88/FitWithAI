@@ -59,7 +59,7 @@ val appModule = module {
     single { ActivityProvider() }
 
     single<GoogleLoginRepository> {
-        GoogleLoginRepositoryImpl(firebaseAuth = get(), tokenManager = get())
+        GoogleLoginRepositoryImpl(authRemote = get(), tokenManager = get())
     }
     single<InstagramLoginRepository> {
         InstagramLoginRepositoryImpl(

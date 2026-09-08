@@ -1,30 +1,27 @@
 package com.fitwithai.data.auth
 
+import com.fitwithai.common.state.ResultState
 import com.fitwithai.core.datastore.TokenManager
+import com.fitwithai.data.remote.AuthRemoteDataSource
 import com.fitwithai.domain.model.AuthResult
 import com.fitwithai.domain.repository.GoogleLoginRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.tasks.await
 
+/**
+ * Exchanges the on-device Google ID token (from Credential Manager) for a first-party session via
+ * `POST /v1/auth/google`, persisting the access + refresh tokens so the Ktor `Auth` plugin can
+ * attach and refresh them. OAuth acquisition stays on-device; only the ID token is sent up.
+ */
 class GoogleLoginRepositoryImpl(
-    private val firebaseAuth: FirebaseAuth,
+    private val authRemote: AuthRemoteDataSource,
     private val tokenManager: TokenManager,
 ) : GoogleLoginRepository {
 
     override suspend fun signInWithGoogle(idToken: String): AuthResult {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        val result = firebaseAuth.signInWithCredential(credential).await()
-        val isNewUser = result.additionalUserInfo?.isNewUser == true
-
-        val tokenResult = firebaseAuth.currentUser
-            ?.getIdToken(true)
-            ?.await()
-            ?: error("User token retrieval failed")
-
-        val token = tokenResult.token.orEmpty()
-        tokenManager.saveToken(token)
-
-        return AuthResult(isNewUser = isNewUser, token = token)
+        val session = when (val result = authRemote.google(idToken)) {
+            is ResultState.Ok -> result.value
+            is ResultState.Err -> throw result.throwable
+        }
+        tokenManager.saveTokens(accessToken = session.accessToken, refreshToken = session.refreshToken)
+        return AuthResult(isNewUser = session.isNewUser, token = session.accessToken)
     }
 }
