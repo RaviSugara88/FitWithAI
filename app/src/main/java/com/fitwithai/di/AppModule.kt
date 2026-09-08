@@ -23,7 +23,10 @@ import com.fitwithai.domain.repository.GoogleLoginRepository
 import com.fitwithai.domain.repository.InstagramLoginRepository
 import com.fitwithai.domain.usecase.GoogleLoginUseCase
 import com.fitwithai.domain.usecase.InstagramLoginUseCase
+import com.fitwithai.domain.usecase.RequestOtpUseCase
+import com.fitwithai.domain.usecase.VerifyOtpUseCase
 import com.fitwithai.ui.screens.login.LoginViewModel
+import com.fitwithai.ui.screens.login.PhoneAuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.russhwolf.settings.SharedPreferencesSettings
 import com.russhwolf.settings.Settings
@@ -72,8 +75,11 @@ val appModule = module {
 
     factory { GoogleLoginUseCase(get()) }
     factory { InstagramLoginUseCase(get()) }
+    factory { RequestOtpUseCase(get()) }
+    factory { VerifyOtpUseCase(get()) }
 
     viewModel { LoginViewModel(get(), get()) }
+    viewModel { PhoneAuthViewModel(get(), get()) }
 }
 
 val koinModules = listOf(

@@ -1,5 +1,6 @@
 package com.fitwithai.ui.screens.login
 
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -67,6 +68,7 @@ private val ButtonHeight = 54.dp
 fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
     onNavigateToDashboard: () -> Unit,
+    onNavigateToPhoneLogin: () -> Unit = {},
 ) {
     val googleCredentialProvider = koinInject<GoogleCredentialProvider>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -78,6 +80,13 @@ fun LoginScreen(
             when (event) {
                 LoginEvent.NavigateToDashboard -> onNavigateToDashboard()
             }
+        }
+    }
+
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let { msg ->
+            Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
+            viewModel.clearError()
         }
     }
 
@@ -118,16 +127,6 @@ fun LoginScreen(
                     lineHeight = 34.sp,
                     textAlign = TextAlign.Center,
                 )
-                uiState.errorMessage?.let { msg ->
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = msg,
-                        color = Color(0xFFB3261E),
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Column(
@@ -180,7 +179,7 @@ fun LoginScreen(
                     borderColor = ButtonBorder,
                     onClick = {
                         if (uiState.isLoading) return@SocialPillButton
-                        viewModel.onUsePhoneNumber()
+                        onNavigateToPhoneLogin()
                     },
                     enabled = !uiState.isLoading,
                     icon = {

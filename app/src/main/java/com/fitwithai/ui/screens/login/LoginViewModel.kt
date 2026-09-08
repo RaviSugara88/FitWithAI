@@ -61,12 +61,6 @@ class LoginViewModel(
         }
     }
 
-    fun onUsePhoneNumber() {
-        _uiState.update {
-            it.copy(errorMessage = "Phone sign-in is not available yet.")
-        }
-    }
-
     fun clearError() {
         _uiState.update { it.copy(errorMessage = null) }
     }
