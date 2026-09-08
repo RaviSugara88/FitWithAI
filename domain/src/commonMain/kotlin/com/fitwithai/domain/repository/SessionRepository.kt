@@ -8,4 +8,7 @@ import com.fitwithai.domain.model.User
  */
 interface SessionRepository {
     suspend fun bootstrap(): User?
+
+    /** Revokes the session server-side (best effort) and always clears local tokens. */
+    suspend fun logout()
 }

@@ -32,4 +32,10 @@ class SessionRepositoryImpl(
             }
         }
     }
+
+    override suspend fun logout() {
+        // Best-effort server revoke; local tokens are cleared regardless so logout never gets stuck.
+        tokenManager.getRefreshToken()?.let { authRemote.logout(it) }
+        tokenManager.clearToken()
+    }
 }

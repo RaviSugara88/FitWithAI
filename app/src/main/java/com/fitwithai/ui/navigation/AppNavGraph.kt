@@ -63,7 +63,14 @@ fun AppNavGraph(
             )
         }
         composable(Routes.DASHBOARD) {
-            DashboardScreen()
+            DashboardScreen(
+                onLoggedOut = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(Routes.DASHBOARD) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+            )
         }
 
         navigation(startDestination = Routes.LOGIN_PHONE, route = Routes.PHONE_AUTH) {

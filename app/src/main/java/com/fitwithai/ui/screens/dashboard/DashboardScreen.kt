@@ -35,7 +35,9 @@ private data class DashboardTab(
 )
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(
+    onLoggedOut: () -> Unit = {},
+) {
     val dashboardNavController = rememberNavController()
     val tabs = listOf(
         DashboardTab(Routes.HOME, "Home", Icons.Filled.Home),
@@ -85,7 +87,7 @@ fun DashboardScreen() {
             composable(Routes.ACTIVITY) { WorkoutScreen() }
             composable(Routes.HISTORY) { AiCoachScreen() }
             composable(Routes.PROGRESS) { ProgressScreen() }
-            composable(Routes.PROFILE) { ProfileTabScreen() }
+            composable(Routes.PROFILE) { ProfileTabScreen(onLoggedOut = onLoggedOut) }
         }
     }
 }
