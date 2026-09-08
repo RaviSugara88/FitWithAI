@@ -3,19 +3,53 @@ CREATE TABLE workout (
     name TEXT NOT NULL,
     durationMinutes INTEGER NOT NULL,
     calories INTEGER NOT NULL,
-    performedAtEpochMs INTEGER NOT NULL
+    performedAtEpochMs INTEGER NOT NULL,
+    clientId TEXT,
+    updatedAtEpochMs INTEGER NOT NULL DEFAULT 0,
+    deleted INTEGER NOT NULL DEFAULT 0,
+    pendingSync INTEGER NOT NULL DEFAULT 0
 );
 
+-- Live workouts for the UI (tombstones hidden), newest first.
 selectAll:
 SELECT *
 FROM workout
+WHERE deleted = 0
 ORDER BY performedAtEpochMs DESC;
 
-upsert:
-INSERT OR REPLACE INTO workout(id, name, durationMinutes, calories, performedAtEpochMs)
-VALUES (?, ?, ?, ?, ?);
+selectById:
+SELECT *
+FROM workout
+WHERE id = ?;
 
-deleteById:
+-- Local changes not yet confirmed by the server (includes tombstones).
+selectPendingChanges:
+SELECT *
+FROM workout
+WHERE pendingSync = 1;
+
+-- High-water mark of applied server changes; NULL when the table is empty.
+selectMaxUpdatedAt:
+SELECT MAX(updatedAtEpochMs)
+FROM workout;
+
+upsert:
+INSERT OR REPLACE INTO workout(id, name, durationMinutes, calories, performedAtEpochMs, clientId, updatedAtEpochMs, deleted, pendingSync)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Soft delete: keep the row as a tombstone so the deletion syncs upstream.
+markDeleted:
+UPDATE workout
+SET deleted = 1, pendingSync = 1, updatedAtEpochMs = ?
+WHERE id = ?;
+
+-- Clear the pending flag once the server has accepted a change.
+clearPending:
+UPDATE workout
+SET pendingSync = 0
+WHERE id = ?;
+
+hardDeleteById:
 DELETE FROM workout
 WHERE id = ?;
 

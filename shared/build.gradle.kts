@@ -38,6 +38,7 @@ kotlin {
             api(projects.core.common)
             api(projects.core.database)
             api(projects.core.datastore)
+            api(projects.core.network)
             api(projects.core.platform)
 
             implementation(libs.koin.core)

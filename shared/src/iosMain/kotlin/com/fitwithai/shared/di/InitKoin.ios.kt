@@ -3,6 +3,8 @@ package com.fitwithai.shared.di
 import com.fitwithai.core.database.DatabaseDriverFactory
 import com.fitwithai.core.datastore.IosSecureStorage
 import com.fitwithai.core.datastore.SecureStorage
+import com.fitwithai.core.network.ApiConfig
+import com.fitwithai.core.platform.Platform
 import com.russhwolf.settings.NSUserDefaultsSettings
 import com.russhwolf.settings.Settings
 import org.koin.core.KoinApplication
@@ -20,6 +22,13 @@ val iosPlatformModule = module {
     single { DatabaseDriverFactory() }
     single<SecureStorage> { IosSecureStorage() }
     single<Settings> { NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults) }
+    single {
+        ApiConfig(
+            baseUrl = "https://api.fitwithai.app/",
+            platformName = get<Platform>().name,
+            appVersion = "1.0",
+        )
+    }
 }
 
 /**

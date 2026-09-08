@@ -2,6 +2,7 @@ package com.fitwithai.shared.di
 
 import com.fitwithai.core.database.databaseModule
 import com.fitwithai.core.datastore.datastoreModule
+import com.fitwithai.core.network.networkModule
 import com.fitwithai.core.platform.platformModule
 import com.fitwithai.data.di.dataModule
 import com.fitwithai.presentation.di.presentationModule
@@ -16,6 +17,7 @@ val sharedModules: List<Module> = listOf(
     platformModule,
     databaseModule,
     datastoreModule,
+    networkModule,
     dataModule,
     presentationModule,
 )
